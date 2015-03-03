@@ -55,5 +55,10 @@ plot1 <- function(){
   #(getDataByRT())
   #(getDataByLine())
   df <- getFilteredData()
-  head(df)
+  png(filename = "data/plot1.png", width = 480, height = 480,bg = "white")
+  hist(df$Global_active_power, col="red", 
+       xlab = "Global Active Power (kilowatts)",
+       main = "Global Active Power")
+  dev.off()
+  c("Plot completed")
 }
