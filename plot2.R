@@ -5,7 +5,9 @@ plot2 <- function(){
   Sys.setlocale("LC_TIME", "en_US.UTF-8") 
   df$dow <- format(as.POSIXlt(df[, "Date"], format = "%d/%m/%Y"), format = '%a')
   
-  plot(df$Global_active_power, type="l")
+  plot(df$Global_active_power, type="l", xaxt = "n")
+  axis(1, at = c(1,1441,2880), labels = c('Thu', 'Fri', 'Sat'))
+  df$dow
 }
 
 test3 <- function(){
