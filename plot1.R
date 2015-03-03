@@ -46,8 +46,8 @@ getFilteredData <- function(){
                     strptime(paste(x['Date'], x['Time']), 
                             format = "%d/%m/%Y %H:%M:%S", 
                             tz="GMT"))
-  df$Date <- NULL
-  df$Time <- NULL
+  #df$Date <- NULL
+  #df$Time <- NULL
   df
 }
 
