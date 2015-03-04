@@ -41,24 +41,54 @@ getFilteredData <- function(){
   cc <- c(rep("character", 2), rep("numeric", 7))
   df <- read.table('data/filtdata.txt', header = TRUE, sep = ";", 
                    colClasses = cc)
-  df$DateTime <- apply(df[,c('Date', 'Time')], 1, 
-                   function(x) 
-                    strptime(paste(x['Date'], x['Time']), 
-                            format = "%d/%m/%Y %H:%M:%S", 
-                            tz="GMT"))
+  #df$DateTime <- apply(df[,c('Date', 'Time')], 1, 
+  #                 function(x) 
+  #                  strptime(paste(x['Date'], x['Time']), 
+  #                          format = "%d/%m/%Y %H:%M:%S", 
+  #                          tz="GMT"))
+  
+  #fileurl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+  #temp <- tempfile()
+  #download.file(fileurl, temp)
+  
+  library(lubridate)
+  df$Date <- dmy(df$Date)
+  df$Time <- hms(df$Time)
+  df$datetime <- (df$Date + df$Time)
   #df$Date <- NULL
   #df$Time <- NULL
   df
+}
+
+testuz <- function(){
+  fileurl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+  temp <- tempfile()
+  #download.file fails in RStudio, but succeeds when run in E console
+  #problem probably related to proxy server setting 
+  #(but Sys.getenv("http_proxy") retusn the correct values in both RStudio and R console! )
+  #Windows users may want to remove the method = "curl" argument
+  download.file(fileurl, temp, method = "curl")
+  cc <- c(rep("character", 2), rep("numeric", 7))
+  dt <- read.table(unz(temp, "household_power_consumption.txt"), header = TRUE, sep = ";", 
+                   colClasses = cc, na.strings = "?")
+  unlink(temp)
+  dtf <- subset(dt, subset=(Date=='1/2/2007' | Date=='2/2/2007' ))
+  library(lubridate)
+  dtf$Date <- dmy(dtf$Date)
+  dtf$Time <- hms(dtf$Time)
+  dtf$datetime <- (dtf$Date + dtf$Time)
+  str(dtf)
 }
 
 plot1 <- function(){
   #(getDataByRT())
   #(getDataByLine())
   df <- getFilteredData()
-  #png(filename = "~/Documents/coursera/ExData/data/plot1.png", width = 480, height = 480,bg = "white")
+  wh <- 480  #504 = for reproduction of example exactly, 480 = assignment requirement
+  png(filename = "~/Documents/coursera/ExData/data/plot1.png", width = wh, height = wh,bg = "white")
   hist(df$Global_active_power, col="red", 
        xlab = "Global Active Power (kilowatts)",
        main = "Global Active Power")
-  #dev.off()
-  #c("Plot completed")
+  dev.off()
+  
 }
