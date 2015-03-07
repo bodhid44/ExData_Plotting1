@@ -1,32 +1,24 @@
-plot2 <- function(){
-  df <- getFilteredData()
-  #head(df)
-  #df[1, "DateTime"]
-  Sys.setlocale("LC_TIME", "en_US.UTF-8") 
-  #df$dow <- format(as.POSIXlt(df[, "Date"], format = "%d/%m/%Y"), format = '%a')
+# Creates the required png file for the plot2 graph
+# plotsize enables the plot to created with the same dimensions (504) as the example provided,
+# or the size required for the assignment by default
+# Using an image editor (gimp) the two plots with width/height of 504 can then be compared to ensure
+# that the plot created by this function is exactly the same as the example provided
+#
+# This function uses a simple caching mechanism to get the filtered dataset
+# (see the HouseholdPowerConsumption.Reader.R file)
+plot2 <- function(plotsize = 480){
   
-  wh <- 480  #504 = for reproduction of example exactly, 480 = assignment requirement
-  png(filename = "~/Documents/coursera/ExData/data/plot2.png", width = wh, height = wh,bg = "white")
+  if (!exists('hpc.reader')){
+    message('Loading HouseholdPowerConsumption.Reader.R source')
+    source('./HouseholdPowerConsumption.Reader.R')
+    hpc.reader <<- HouseholdPowerConsumption.Reader()
+  }
+  df <- hpc.reader$getFilteredData()
+  #my locale is different, so change to ensure all date/time output is correct
+  Sys.setlocale("LC_TIME", "en_US.UTF-8") 
+  png(filename = "./plot2.png", width = plotsize, height = plotsize, bg = "white")
   plot(df$datetime, df$Global_active_power, type="l", 
        ylab="Global Active Power (kilowatts)", 
        xlab="")
   dev.off()
-  #plot(Date, Global_active_power, data = df,  type="l")
-  #rowcnt <- nrow(df)
-  #axis(1, at = c(1,((rowcnt/2)+1),rowcnt), labels = c('Thu', 'Fri', 'Sat'))
-  #df$dow
-}
-
-
-test3 <- function(){
-  df <- getFilteredData()
-  #df[1, "Date"]
-  Sys.setlocale("LC_TIME", "en_US.UTF-8") 
-  #df$dow <- format(as.POSIXlt(df[, "Date"], format = "%d/%m/%Y"), format = '%a')
-  #format(d, format = '%a')
-  rowcnt <- nrow(df)
-  xax <- c(format(as.POSIXlt(df[1, "Date"], format = "%d/%m/%Y"), format = '%a'),
-           format(as.POSIXlt(df[(rowcnt/2)+1, "Date"], format = "%d/%m/%Y"), format = '%a'),
-           format(as.POSIXlt(df[rowcnt, "Date"], format = "%d/%m/%Y"), format = '%a'))
-  xax
 }
