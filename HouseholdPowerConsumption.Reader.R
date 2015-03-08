@@ -15,10 +15,8 @@
 HouseholdPowerConsumption.Reader <- function() {
   HouseholdPowerConsumption.filtered <- NULL;
   getFilteredDataframe <- function(){
-    if (!is.null(HouseholdPowerConsumption.filtered)){
-      #use the cached version
-      return(HouseholdPowerConsumption.filtered)
-    } else {
+    #if not yet cached, get and cache the dataframe (otherwise use the cached version)
+    if (is.null(HouseholdPowerConsumption.filtered)){
       #download into a temporary file
       fileurl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
       temp <- tempfile()
@@ -37,8 +35,8 @@ HouseholdPowerConsumption.Reader <- function() {
       dtf$datetime <- (dtf$Date + dtf$Time)
       #cache and return
       HouseholdPowerConsumption.filtered <<- dtf
-      return(HouseholdPowerConsumption.filtered)
     }
+    return(HouseholdPowerConsumption.filtered)
   }
   #list used to access the getFilteredDataframe function
   return(list(getFilteredData = getFilteredDataframe))
