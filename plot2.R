@@ -5,7 +5,7 @@
 # that the plot created by this function is exactly the same as the example provided
 #
 # This function uses a simple caching mechanism to get the filtered dataset
-# (see the HouseholdPowerConsumption.Reader.R file)
+# (see the HouseholdPowerConsumption.Reader.R and README.md files)
 plot2 <- function(plotsize = 480){
   
   if (!exists('hpc.reader')){
