@@ -5,7 +5,9 @@ Create four R files, each of which recreates a designated plot using a subset of
 
 ## Notes:
 
-1. All four "plot" script files (plot1.R ~ plot4.R) and the data download/cache script (HouseholdPowerConsumption.Reader.R) should be in the same directory
+1. All four "plot" script files (plot1.R ~ plot4.R) and the data download/cache script (HouseholdPowerConsumption.Reader.R) should be in the same directory. To create each plot, source the file and run the function, e.g 
+> source("plot1.R")
+> plot1()
 
 2. The "lubridate" package should be installed [for working with dates]
 
